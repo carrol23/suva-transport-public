@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta https-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Mobile meta tags to go in head-->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="MobileOptimized" content="320"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta https-equiv="cleartype" content="on">
+		<meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1689px;
+            height: 1532px;
+        }
+		.leaflet-popup-content {
+		min-width: 200px;
+		min-height: 100px;
+		overflow-y: scroll;
+		}
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/fjbuscitilineraiwaqatacirua_1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:7
+        }).fitBounds([[-18.171006109767053,178.38964586757555],[-17.978796433068506,178.61117297669355]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="httpsss://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="httpsss://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="httpsss://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OpenStreetMapmonochrome_0');
+        map.getPane('pane_OpenStreetMapmonochrome_0').style.zIndex = 400;
+        var layer_OpenStreetMapmonochrome_0 = L.tileLayer('https://a.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMapmonochrome_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 7,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 18
+        });
+        layer_OpenStreetMapmonochrome_0;
+        map.addLayer(layer_OpenStreetMapmonochrome_0);
+        function pop_fjbuscitilineraiwaqatacirua_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+					<tr>\
+                        <th scope="row">Unique ID</th>\
+						<td>' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RouteID</th>\
+                        <td>' + (feature.properties['RouteID'] !== null ? autolinker.link(feature.properties['RouteID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+					<tr>\
+                        <td colspan="2"><strong>Operator</strong><br />' + (feature.properties['Operator'] !== null ? autolinker.link(feature.properties['Operator'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">RouteName</th>\
+                        <td>' + (feature.properties['RouteName'] !== null ? autolinker.link(feature.properties['RouteName'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PermitName'] !== null ? autolinker.link(feature.properties['PermitName'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_fjbuscitilineraiwaqatacirua_1_0(feature) {
+            switch(String(feature.properties['Operator'])) {
+                case 'CITILINE BUS SERVICES LTD':
+                    return {
+                pane: 'pane_fjbuscitilineraiwaqatacirua_1',
+                opacity: 1,
+                color: 'rgba(37,75,243,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'RAIWAQA BUSES LTD':
+                    return {
+                pane: 'pane_fjbuscitilineraiwaqatacirua_1',
+                opacity: 1,
+                color: 'rgba(255,47,1,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'TACIRUA BUSES LTD':
+                    return {
+                pane: 'pane_fjbuscitilineraiwaqatacirua_1',
+                opacity: 1,
+                color: 'rgba(229,217,39,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_fjbuscitilineraiwaqatacirua_1',
+                opacity: 1,
+                color: 'rgba(225,59,47,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_fjbuscitilineraiwaqatacirua_1');
+        map.getPane('pane_fjbuscitilineraiwaqatacirua_1').style.zIndex = 401;
+        map.getPane('pane_fjbuscitilineraiwaqatacirua_1').style['mix-blend-mode'] = 'normal';
+        var layer_fjbuscitilineraiwaqatacirua_1 = new L.geoJson(json_fjbuscitilineraiwaqatacirua_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_fjbuscitilineraiwaqatacirua_1',
+            layerName: 'layer_fjbuscitilineraiwaqatacirua_1',
+            pane: 'pane_fjbuscitilineraiwaqatacirua_1',
+            onEachFeature: pop_fjbuscitilineraiwaqatacirua_1,
+            style: style_fjbuscitilineraiwaqatacirua_1_0,
+        });
+        bounds_group.addLayer(layer_fjbuscitilineraiwaqatacirua_1);
+        map.addLayer(layer_fjbuscitilineraiwaqatacirua_1);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'fj-bus-citiline-raiwaqa-tacirua<br /><table><tr><td style="text-align: center;"><img src="legend/fjbuscitilineraiwaqatacirua_1_CITILINEBUSSERVICESLTD0.png" /></td><td>CITILINE BUS SERVICES LTD</td></tr><tr><td style="text-align: center;"><img src="legend/fjbuscitilineraiwaqatacirua_1_RAIWAQABUSESLTD1.png" /></td><td>RAIWAQA BUSES LTD</td></tr><tr><td style="text-align: center;"><img src="legend/fjbuscitilineraiwaqatacirua_1_TACIRUABUSESLTD2.png" /></td><td>TACIRUA BUSES LTD</td></tr><tr><td style="text-align: center;"><img src="legend/fjbuscitilineraiwaqatacirua_1_3.png" /></td><td></td></tr></table>': layer_fjbuscitilineraiwaqatacirua_1,"OpenStreetMap monochrome": layer_OpenStreetMapmonochrome_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_fjbuscitilineraiwaqatacirua_1,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'RouteName'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"RouteName": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + key).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + key).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + key).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_RouteName = document.createElement('div');
+            div_RouteName.id = "div_RouteName";
+            div_RouteName.className= "filterselect";
+            document.getElementById("menu").appendChild(div_RouteName);
+            sel_RouteName = document.createElement('select');
+            sel_RouteName.multiple = true;
+            sel_RouteName.size = 10;
+            sel_RouteName.id = "sel_RouteName";
+            var RouteName_options_str = "<option value='' unselected></option>";
+            sel_RouteName.onchange = function(){filterFunc()};
+            RouteName_options_str  += '<option value="4 Miles Bridge">4 Miles Bridge</option>';
+            RouteName_options_str  += '<option value="A.M.Suva Bus Stand, Harris Rd, Foster Rd, Reservoir Rd, Princess Rd, Kings Rd, Wainibokasi Rd, Stop">A.M.Suva Bus Stand, Harris Rd, Foster Rd, Reservoir Rd, Princess Rd, Kings Rd, Wainibokasi Rd, Stop</option>';
+            RouteName_options_str  += '<option value="Adi Davila Ganilau Road, Davuilevu Housing, Kings Road, NG Patel Road, Nausori Bus Station and vice">Adi Davila Ganilau Road, Davuilevu Housing, Kings Road, NG Patel Road, Nausori Bus Station and vice</option>';
+            RouteName_options_str  += '<option value="Corbett Avenue Housing, Waila, Dilkusha Rd, Nausori">Corbett Avenue Housing, Waila, Dilkusha Rd, Nausori</option>';
+            RouteName_options_str  += '<option value="Corbrtt Avenue, Waila Housing Authority, Nausori">Corbrtt Avenue, Waila Housing Authority, Nausori</option>';
+            RouteName_options_str  += '<option value="Cunningham, PrincessRd,Suva Bus Stand">Cunningham, PrincessRd,Suva Bus Stand</option>';
+            RouteName_options_str  += '<option value="Damu Place, Ragg Avenue, Vunakece Road, Pathik Cres, Padam Lala Road, Salato Road, Vunakece Road, Me">Damu Place, Ragg Avenue, Vunakece Road, Pathik Cres, Padam Lala Road, Salato Road, Vunakece Road, Me</option>';
+            RouteName_options_str  += '<option value="EDINBURG DRIVE RATU MARA RD CUNNINGHAM RD STG 1,2,3,4 AND BACK TO SUVA">EDINBURG DRIVE RATU MARA RD CUNNINGHAM RD STG 1,2,3,4 AND BACK TO SUVA</option>';
+            RouteName_options_str  += '<option value="From Vatudavila Terminus via Princess Rd to Mead Rd, Nabua Fiji School, St Agness Sch then to Rt Mar">From Vatudavila Terminus via Princess Rd to Mead Rd, Nabua Fiji School, St Agness Sch then to Rt Mar</option>';
+            RouteName_options_str  += '<option value="Lakha Singh Feeder Road/Suva">Lakha Singh Feeder Road/Suva</option>';
+            RouteName_options_str  += '<option value="Matainabou Landing, Wainibokasi, Nausori">Matainabou Landing, Wainibokasi, Nausori</option>';
+            RouteName_options_str  += '<option value="Nakelo/Suva">Nakelo/Suva</option>';
+            RouteName_options_str  += '<option value="Narere Housing Authority, Kings Rd, Rt Mara Rd, Waimanu Rd, Brown Street, Augustus Street, Houn Str">Narere Housing Authority, Kings Rd, Rt Mara Rd, Waimanu Rd, Brown Street, Augustus Street, Houn Str</option>';
+            RouteName_options_str  += '<option value="Narere Settlement, Kings Road, Ratu Mara Rd, Edinburgh Drive, Rodwell Road, Suva Bus Stand and vice">Narere Settlement, Kings Road, Ratu Mara Rd, Edinburgh Drive, Rodwell Road, Suva Bus Stand and vice</option>';
+            RouteName_options_str  += '<option value="Narere, Suva">Narere, Suva</option>';
+            RouteName_options_str  += '<option value="Nausori, Corbett Avenue, Waila and return">Nausori, Corbett Avenue, Waila and return</option>';
+            RouteName_options_str  += '<option value="Nausori, Dilkusha Road, Lal Singh Terminus  and return">Nausori, Dilkusha Road, Lal Singh Terminus  and return</option>';
+            RouteName_options_str  += '<option value="Nausori, Sawani">Nausori, Sawani</option>';
+            RouteName_options_str  += '<option value="Nausori, Sawani, Nausori, Suva">Nausori, Sawani, Nausori, Suva</option>';
+            RouteName_options_str  += '<option value="Nausori, Sawani, Suva via Waibau and return">Nausori, Sawani, Suva via Waibau and return</option>';
+            RouteName_options_str  += '<option value="Nausori, Sawani, Waibau and return">Nausori, Sawani, Waibau and return</option>';
+            RouteName_options_str  += '<option value="Nausori, Visama Fedder Road, Ratu Kadavulevu Road Junction, Vunivaivai, Matainabou">Nausori, Visama Fedder Road, Ratu Kadavulevu Road Junction, Vunivaivai, Matainabou</option>';
+            RouteName_options_str  += '<option value="Nausori, Waila, Navuso, Sawani, Waibau and return">Nausori, Waila, Navuso, Sawani, Waibau and return</option>';
+            RouteName_options_str  += '<option value="Navuso Ferry Landing, Waila, Suva via Kings Road">Navuso Ferry Landing, Waila, Suva via Kings Road</option>';
+            RouteName_options_str  += '<option value="SUVA/MEAD ROAD/MADDOCK/SUKANAIVALU/SUVA">SUVA/MEAD ROAD/MADDOCK/SUKANAIVALU/SUVA</option>';
+            RouteName_options_str  += '<option value="Sawani, Suva via Princess Road">Sawani, Suva via Princess Road</option>';
+            RouteName_options_str  += '<option value="School Trip (AOG School)">School Trip (AOG School)</option>';
+            RouteName_options_str  += '<option value="School Trip (Nabua Fijian Sch via Rewa St">School Trip (Nabua Fijian Sch via Rewa St</option>';
+            RouteName_options_str  += '<option value="School Trip (Nabua Fijian School via Grantham Rd">School Trip (Nabua Fijian School via Grantham Rd</option>';
+            RouteName_options_str  += '<option value="School Trip (Nabua Fijian via Namena Rd">School Trip (Nabua Fijian via Namena Rd</option>';
+            RouteName_options_str  += '<option value="School Trip (Ratu Sukuna School)">School Trip (Ratu Sukuna School)</option>';
+            RouteName_options_str  += '<option value="School Trip on schooldays only">School Trip on schooldays only</option>';
+            RouteName_options_str  += '<option value="School Trip( MGM School)">School Trip( MGM School)</option>';
+            RouteName_options_str  += '<option value="Suva , Waibau and return via Princess Road">Suva , Waibau and return via Princess Road</option>';
+            RouteName_options_str  += '<option value="Suva Bus Stand, Edinbrugh Drive, Princess Road, Tamavua Village Wailoku and return via same route">Suva Bus Stand, Edinbrugh Drive, Princess Road, Tamavua Village Wailoku and return via same route</option>';
+            RouteName_options_str  += '<option value="Suva Bus Stand, Edinburgh Drive, Princess Road, Tamavua 5 1/2 Miles and return via same route">Suva Bus Stand, Edinburgh Drive, Princess Road, Tamavua 5 1/2 Miles and return via same route</option>';
+            RouteName_options_str  += '<option value="Suva Bus Stand, Rodwell Road, Princess Street, Margret Street, Thompson Street, Victoria Parade, Mac">Suva Bus Stand, Rodwell Road, Princess Street, Margret Street, Thompson Street, Victoria Parade, Mac</option>';
+            RouteName_options_str  += '<option value="Suva Bus Stand, Thompson Street, Victoria Parade, Mac Arthur Street, Gordon Street, Mav Gregor Road,">Suva Bus Stand, Thompson Street, Victoria Parade, Mac Arthur Street, Gordon Street, Mav Gregor Road,</option>';
+            RouteName_options_str  += '<option value="Suva Bus Stand,Mead Rd Junction,Suva Bus Stand">Suva Bus Stand,Mead Rd Junction,Suva Bus Stand</option>';
+            RouteName_options_str  += '<option value="Suva Bus Stand,Mead Rd Junction,Suva Bus Stand (via EDINBURGH DRIVE)">Suva Bus Stand,Mead Rd Junction,Suva Bus Stand (via EDINBURGH DRIVE)</option>';
+            RouteName_options_str  += '<option value="Suva Bus Stand,Tamavua 5 1/2 miles,Colo i Suva,Tamavua 5 1/2 miles,">Suva Bus Stand,Tamavua 5 1/2 miles,Colo i Suva,Tamavua 5 1/2 miles,</option>';
+            RouteName_options_str  += '<option value="Suva Bus Station, Tamavua 6 Miles">Suva Bus Station, Tamavua 6 Miles</option>';
+            RouteName_options_str  += '<option value="Suva FIT,Nabua Bajipai and CMC bus stop Cunningham and back same stop">Suva FIT,Nabua Bajipai and CMC bus stop Cunningham and back same stop</option>';
+            RouteName_options_str  += '<option value="Suva, Balabala Cres via Khalsa Road">Suva, Balabala Cres via Khalsa Road</option>';
+            RouteName_options_str  += '<option value="Suva/Cunnigham">Suva/Cunnigham</option>';
+            RouteName_options_str  += '<option value="Suva/Cunningham Road via Princess Road">Suva/Cunningham Road via Princess Road</option>';
+            RouteName_options_str  += '<option value="Suva/Fletcher Rd/Kings Rd Jnc">Suva/Fletcher Rd/Kings Rd Jnc</option>';
+            RouteName_options_str  += '<option value="Suva/Khalsa Road">Suva/Khalsa Road</option>';
+            RouteName_options_str  += '<option value="Suva/Maddock Rd/Suva">Suva/Maddock Rd/Suva</option>';
+            RouteName_options_str  += '<option value="Suva/Mead Rd/ & Pricess Rd Jnc/Walu Bay">Suva/Mead Rd/ & Pricess Rd Jnc/Walu Bay</option>';
+            RouteName_options_str  += '<option value="Suva/Mead Road Junc & Kings Road Junc via Queens Road & Princes Road">Suva/Mead Road Junc & Kings Road Junc via Queens Road & Princes Road</option>';
+            RouteName_options_str  += '<option value="Suva/Mead Road Junct & Kings Road via Princes Road & Nabua Road">Suva/Mead Road Junct & Kings Road via Princes Road & Nabua Road</option>';
+            RouteName_options_str  += '<option value="Suva/Nabua Rd/Mead Junction">Suva/Nabua Rd/Mead Junction</option>';
+            RouteName_options_str  += '<option value="Suva/Nabua Shopping Centre">Suva/Nabua Shopping Centre</option>';
+            RouteName_options_str  += '<option value="Suva/Nailuva/Howell Rd">Suva/Nailuva/Howell Rd</option>';
+            RouteName_options_str  += '<option value="Suva/QEB via Grantham Rd">Suva/QEB via Grantham Rd</option>';
+            RouteName_options_str  += '<option value="Suva/QEB via Nabua Rd">Suva/QEB via Nabua Rd</option>';
+            RouteName_options_str  += '<option value="Suva/Raiwaqa Market">Suva/Raiwaqa Market</option>';
+            RouteName_options_str  += '<option value="Suva/Raiwaqa ret Waimanu">Suva/Raiwaqa ret Waimanu</option>';
+            RouteName_options_str  += '<option value="Suva/Raiwaqa via Edinburg Drive">Suva/Raiwaqa via Edinburg Drive</option>';
+            RouteName_options_str  += '<option value="Suva/Raiwaqa via Thompson St">Suva/Raiwaqa via Thompson St</option>';
+            RouteName_options_str  += '<option value="Suva/Raiwaqa via Thompson St retuned">Suva/Raiwaqa via Thompson St retuned</option>';
+            RouteName_options_str  += '<option value="Suva/Tamavua 6 miles">Suva/Tamavua 6 miles</option>';
+            RouteName_options_str  += '<option value="Suva/Tamavua 6 miles & return via Lakha Singh Feeder Road">Suva/Tamavua 6 miles & return via Lakha Singh Feeder Road</option>';
+            RouteName_options_str  += '<option value="Suva/Tamavua i Wai">Suva/Tamavua i Wai</option>';
+            RouteName_options_str  += '<option value="Suva/Tamavua/BalaBala via Walu Bay & Reservoir Road">Suva/Tamavua/BalaBala via Walu Bay & Reservoir Road</option>';
+            RouteName_options_str  += '<option value="Suva/Vunivaivai">Suva/Vunivaivai</option>';
+            RouteName_options_str  += '<option value="Tamavua 5 1/2 miles/Lakha Singh Feeder Road">Tamavua 5 1/2 miles/Lakha Singh Feeder Road</option>';
+            RouteName_options_str  += '<option value="Tamavua Native Land Subdivision,Wairua Road,St. Joseph School,Methodist Primary School,Chinese Schoo">Tamavua Native Land Subdivision,Wairua Road,St. Joseph School,Methodist Primary School,Chinese Schoo</option>';
+            RouteName_options_str  += '<option value="Visama, Nausori">Visama, Nausori</option>';
+            RouteName_options_str  += '<option value="Visama,Wainibokasi">Visama,Wainibokasi</option>';
+            RouteName_options_str  += '<option value="Vunivaivai, Nausori via Matainabou Landing">Vunivaivai, Nausori via Matainabou Landing</option>';
+            RouteName_options_str  += '<option value="Waila, Suva">Waila, Suva</option>';
+            RouteName_options_str  += '<option value="Wailoku Junction,Suva Bus Stand,Wailoku Junction,Tamavua 6 Miles,Wailoku Junction,Tamavua 6 Miles">Wailoku Junction,Suva Bus Stand,Wailoku Junction,Tamavua 6 Miles,Wailoku Junction,Tamavua 6 Miles</option>';
+            RouteName_options_str  += '<option value="Wailoku, Princess Road,Tamavua Hospital,Princess Rd, Suva Bus Station, and return via same route">Wailoku, Princess Road,Tamavua Hospital,Princess Rd, Suva Bus Station, and return via same route</option>';
+            RouteName_options_str  += '<option value="Walu Bay , Narere">Walu Bay , Narere</option>';
+            sel_RouteName.innerHTML = RouteName_options_str;
+            div_RouteName.appendChild(sel_RouteName);
+            var lab_RouteName = document.createElement('div');
+            lab_RouteName.innerHTML = 'RouteName';
+            lab_RouteName.className = 'filterlabel';
+            div_RouteName.appendChild(lab_RouteName);
+            var reset_RouteName = document.createElement('div');
+            reset_RouteName.innerHTML = 'clear filter';
+            reset_RouteName.className = 'filterlabel';
+            reset_RouteName.onclick = function() {
+                var options = document.getElementById("sel_RouteName").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_RouteName.appendChild(reset_RouteName);
+        resetLabels([layer_fjbuscitilineraiwaqatacirua_1]);
+        map.on("zoomend", function(){
+            resetLabels([layer_fjbuscitilineraiwaqatacirua_1]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_fjbuscitilineraiwaqatacirua_1]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_fjbuscitilineraiwaqatacirua_1]);
+        });
+        </script>
+    </body>
+</html>
